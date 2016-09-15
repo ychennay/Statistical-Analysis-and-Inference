@@ -1,5 +1,5 @@
 The code below is almost entirely from Joel Grus' Data Science From Scratch: First Principles With Python. I did not create it. You may find
-the rest of his code available on his own website. I upload it here as examples of code that I am able to implement to conduct simple
+the rest of his code available on his own website: https://github.com/joelgrus/data-science-from-scratch. I upload it here as examples of code that I am able to implement to conduct simple
 statistical analysis. I also use this as a repository for my own statistical analysis work.
 
 # POSTERIOR DISTRIBUTION FUNCTION FOR X, GIVEN MU AND STD IN A NORMAL DISTRIBUTION

@@ -1,0 +1,34 @@
+The code below is almost entirely from Joel Grus' Data Science From Scratch: First Principles With Python. I did not create it. You may find
+the rest of his code available on his own website. I upload it here as examples of code that I am able to implement to conduct simple
+statistical analysis. I also use this as a repository for my own statistical analysis work.
+
+# POSTERIOR DISTRIBUTION FUNCTION FOR X, GIVEN MU AND STD IN A NORMAL DISTRIBUTION
+
+def normalPDF(x, mu=0, sigma=1): 
+    return math.exp(-((x-mu) ** 2) / 2) / (math.sqrt(2 * math.pi) * sigma) 
+
+# NORMAL CUMULATIVE DISTRIBUTION FUNCTION
+
+def normalCDF(x, mu=0, sigma=1):
+    return (1 + math.erf((x-mu) / math.sqrt(2) / sigma)) / 2
+    
+# INVERSE NORMAL CDF USING BINARY SEARCH
+
+def inverseNormalCDF(prob, mu=0, sigma=1, tolerance = 0.0001):
+    if mu != 0 or sigma != 1:
+        return mu + sigma * inverseNormalCDF(prob, tolerance = tolerance)
+    
+    floor, floorP = -10.0, 0
+    ceiling, ceilingP = 10.0,1
+    while ceiling - floor > tolerance:
+        midpoint = (floor + ceiling) / 2
+        midpointP = normalCDF(midpoint)
+        
+        if midpointP < prob:
+            floor, floorP = midpoint, midpointP
+        elif midpointP > prob:
+            ceiling, ceilingP = midpoint, midpointP
+        else:
+            break
+    
+    return midpoint

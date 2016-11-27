@@ -1,0 +1,15 @@
+#random walk code
+
+variance = 1
+data_past = 0
+data = vector()
+N = 50000
+
+for (iteration in 1:N) {
+data_current <- rnorm(1,data_past,variance)
+data[iteration] = data_current
+data_past = data_current
+}
+
+plot(data, xlab="Iteration", ylab="Value", main=paste("Plot of Sampled Iterations, N= ", N))
+hist(data,main=paste("Histogram of Normal Distribution with N = ", N), xlab = "Value")

@@ -1,0 +1,60 @@
+# taxi cab problem as referenced as an example of biased estimators based upon Professor
+# Geoffrey Hubona's Udemy course R Programming For Simulation and Monte Carlo Methods
+taxi = function(N,n){
+  y = sample(N, size=n, replace=TRUE)
+  estimate1 = max(y)
+  estimate2 = 2 * mean(y)
+  c(estimate1=estimate1, estimate2=estimate2)}
+
+estimates = replicate(1000, taxi(100,5))
+# computes the bias and the standard error (standard deviation divided by square root of N)
+#Estimate 1 is taking the maxiumum number for n as N
+c(mean(estimates["estimate1",])-100, sd(estimates["estimate1",]) / sqrt(1000))
+# Estimate 2 is taking the mean and multiplying by 2
+c(mean(estimates["estimate2",])-100, sd(estimates["estimate2",]) / sqrt(1000))
+
+# create box plot to see the bias
+absolute.error = abs(estimates - 100)
+boxplot(t(absolute.error))
+
+set.seed(2)
+#create Monte Carlo function
+mc <- function(mu, sigma, sample.size){
+monte.carlo = rnorm(sample.size, mu, sigma)
+total.travel.time = sum(monte.carlo)
+c(total.travel.time)}
+
+# run it one time
+sum(mc(20,4,5))
+
+y = replicate(1000, mc(20,4,5))
+mean(y) #mean after 1000 iterations is 100.781
+
+y = replicate(1000000, mc(20,4,5))
+mean(y) #mean after 1000000 iterations is 99.99565
+
+#create Monte Carlo function #2
+mc.late <- function(mu, sigma, sample.size, late.time){
+  monte.carlo = rnorm(sample.size, mu, sigma)
+  total.travel.time = sum(monte.carlo)
+  ifelse(all(monte.carlo <= late.time), "On Time", "At Least One Tardiness")}
+
+y = replicate(1000,mc.late(20,4,5,25))
+mean(y == "On Time")
+# a student that leaves 25 minutes early to class, know it takes
+# about 20 minutes to get there with sigma = 4 min, will be on time
+# each week only about 58% of the time
+
+
+mc.max <- function(mu, sigma, sample.size){
+  monte.carlo = rnorm(sample.size, mu, sigma)
+  total.travel.time = sum(monte.carlo)
+  max(monte.carlo)
+}
+
+y = replicate(1000, mc.max(20,4,5))
+mean(y) # the average maximum travel time each week si 24.68488
+
+# what if this is extended to 7 days?
+y = replicate(1000, mc.max(20,4,7))
+mean(y) # the average maximum travel time each week is 25.5
